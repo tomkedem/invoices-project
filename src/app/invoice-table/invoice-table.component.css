@@ -1,0 +1,14 @@
+.my-button {
+    margin-right: 15px;  /* Or whatever amount of space you want */
+  }
+  .search-container {
+    margin-top: 20px;
+  }
+  
+  .rounded-search-box {
+    border-radius: 20px;
+  }
+  
+  .custom-header {
+    background-color: #d4edd1; /* Replace with your desired subtle green color */
+  }

@@ -1,0 +1,18 @@
+<mat-dialog-content>
+    <h1 mat-dialog-title>Add New Invoice for {{data.customerName}}</h1>
+    <p>Adding new invoice for customer ID: {{data.customerId}}</p>
+    <h2 mat-dialog-title>{{formCaption}}</h2>
+    <mat-form-field appearance="fill">
+      <mat-label>Amount</mat-label>
+      <input matInput [formControl]="amountControl" placeholder="Enter Amount">
+      <mat-error *ngIf="amountControl.invalid && amountControl.touched">
+        Amount is required
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" (click)="cancelNewRecord()">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="amountControl.invalid" (click)="submitForm()" cdkFocusInitial>Save</button>
+  </mat-dialog-actions>
+  

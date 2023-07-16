@@ -1,0 +1,65 @@
+<div class="container">
+  <form [formGroup]="searchForm" class="form-inline mb-3 search-container">
+    <mat-form-field style="width:40%;" appearance="fill" class="ml-auto rounded-search-box">
+      <input matInput (input)="filter($event)" type="text" autocomplete="off" placeholder="Search" formControlName="searchKey">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </form>
+
+  <div class="mat-elevation-z8 table-responsive">
+    <table mat-table [dataSource]="dataSource" class="table my-table mat-elevation-z8" matSort>
+      <ng-container [matColumnDef]="item.key" *ngFor="let item of userTestStatus; let i = index">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef style="background-color: rgb(13, 216, 219);">
+          {{ item.label }}
+        </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index">
+          <ng-container *ngIf="(isAddingNewRecord && i !== 0) || editingIndex === rowIndex; else viewTemplate">
+            <input matInput [(ngModel)]="element[item.key]" *ngIf="item.key === 'status' || item.key === 'amount'" />
+          </ng-container>
+          <ng-template #viewTemplate>
+            {{ item.type=='date'? (element[item.key] | date:"dd/MM/yyyy") : element[item.key] }}
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="background-color: rgb(13, 216, 219);">
+          <div class="d-flex justify-content-end align-items-center">
+            <div style="float: right;margin-right: 20px;">Actions</div>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index">
+          <div class="d-flex justify-content-end">
+            <ng-container *ngIf="(isAddingNewRecord && rowIndex !== 0) || editingIndex === rowIndex; else normalActionButtons">
+              <button class="btn btn-primary my-button" (click)="saveEdit(element)" title="Save Record">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button class="btn btn-secondary" (click)="cancelRecord(isAddingNewRecord && rowIndex === 0)" title="Cancel">
+                <mat-icon>cancel</mat-icon>
+              </button>              
+            </ng-container>
+            <ng-template #normalActionButtons>
+              <button class="btn btn-danger my-button" (click)="deleteRecord(element.id)" title="Delete Record">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button class="btn btn-primary my-button" (click)="startEdit(rowIndex)" title="Edit Record">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button class="btn btn-success" (click)="addNewInvoice(element.customerId, element.customerName)" title="Add New Invoice">
+                <mat-icon>add</mat-icon>
+              </button>
+            </ng-template>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="pageSizes" [length]="length" [pageSize]="pageSize" 
+      (page)="pageEvent=$event;onPageChange($event)" showFirstLastButtons
+      class="my-3"
+    ></mat-paginator>
+  </div>
+</div>
