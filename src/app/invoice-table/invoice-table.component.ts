@@ -91,10 +91,6 @@ export class InvoiceTableComponent implements OnInit {
       }
     });
   }
-  reloadData(): void {
-    // Logic to reload the table data
-  }
-  
   
 
   cancelRecord(isAddingNewRecord: boolean): void {
